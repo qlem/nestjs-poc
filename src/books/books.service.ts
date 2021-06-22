@@ -1,35 +1,53 @@
 import { Injectable } from '@nestjs/common';
+import { Book as BookModel } from '@prisma/client';
 
-import { books as data } from '../../database.json';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class BooksService {
-  /**
-   * MOCK
-   * Put some real business logic here
-   * Left for demonstration purposes
-   */
+  constructor(private prismaService: PrismaService) {}
 
-  async create({
+  async createOne({
     title,
     authorId,
   }: {
     title: string;
-    authorId: string;
-  }): Promise<{ title: string; authorId: string }> {
-    return {
-      title,
-      authorId,
-    };
+    authorId: number;
+  }): Promise<BookModel> {
+    return this.prismaService.book.create({
+      data: {
+        title,
+        author: {
+          connect: {
+            id: authorId,
+          },
+        },
+      },
+      include: {
+        author: true,
+      },
+    });
   }
 
-  async remove(id: string): Promise<boolean> {
-    return true;
+  async removeOneById(id: number): Promise<BookModel> {
+    return this.prismaService.book.delete({
+      where: {
+        id,
+      },
+      include: {
+        author: true,
+      },
+    });
   }
 
-  async findOneById(
-    id: string,
-  ): Promise<{ id: string; title: string; authorId: string }> {
-    return data.find((book) => book.id === id);
+  async findOneById(id: number): Promise<BookModel> {
+    return this.prismaService.book.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        author: true,
+      },
+    });
   }
 }

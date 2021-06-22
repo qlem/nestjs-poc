@@ -1,4 +1,4 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Query, Resolver } from '@nestjs/graphql';
 
 import { AuthorsService } from './authors.service';
 import { Author } from './models/author.model';
@@ -8,7 +8,7 @@ export class AuthorsResolver {
   constructor(private authorsService: AuthorsService) {}
 
   @Query(() => Author)
-  async author(@Args('id', { type: () => String }) id: string) {
+  async author(@Args('id', { type: () => Int }) id: number) {
     return this.authorsService.findOneById(id);
   }
 }

@@ -5,7 +5,7 @@ import { Author } from '../../authors/models/author.model';
 @ObjectType()
 export class Book {
   @Field({ description: "The book's ID" })
-  id: string;
+  id: number;
 
   @Field({ description: "The book's title" })
   title: string;

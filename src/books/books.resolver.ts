@@ -1,27 +1,14 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-
-import { AuthorsService } from '../authors/authors.service';
+import { Args, Int, Query, Resolver } from '@nestjs/graphql';
 
 import { Book } from './models/book.model';
 import { BooksService } from './books.service';
 
 @Resolver(() => Book)
 export class BooksResolver {
-  constructor(
-    private booksService: BooksService,
-    private authorsService: AuthorsService,
-  ) {}
+  constructor(private booksService: BooksService) {}
 
   @Query(() => Book)
-  async book(@Args('id', { type: () => String }) id: string) {
+  async book(@Args('id', { type: () => Int }) id: number) {
     return this.booksService.findOneById(id);
-  }
-
-  @ResolveField()
-  async author(
-    @Parent() book: { id: string; title: string; authorId: string },
-  ) {
-    const { authorId } = book;
-    return this.authorsService.findOneById(authorId);
   }
 }

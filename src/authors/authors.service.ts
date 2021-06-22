@@ -1,27 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { Author } from './models/author.model';
+import { Author as AuthorModel } from '@prisma/client';
 
-import { authors as data } from '../../database.json';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class AuthorsService {
-  /**
-   * MOCK
-   * Put some real business logic here
-   * Left for demonstration purposes
-   */
+  constructor(private prismaService: PrismaService) {}
 
-  async create({ name }: { name: string }): Promise<{ name: string }> {
-    return {
-      name,
-    };
+  async createOne({ name }: { name: string }): Promise<AuthorModel> {
+    return this.prismaService.author.create({
+      data: {
+        name,
+      },
+    });
   }
 
-  async remove(id: string): Promise<boolean> {
-    return true;
+  async removeOneById(id: number): Promise<AuthorModel> {
+    return this.prismaService.author.delete({
+      where: {
+        id,
+      },
+    });
   }
 
-  async findOneById(id: string): Promise<Author> {
-    return data.find((author) => author.id === id);
+  async findOneById(id: number): Promise<AuthorModel> {
+    return this.prismaService.author.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 }
