@@ -3,8 +3,11 @@
 # ------------------------------------------------------
 
 type Author {
+  """Books written by the author"""
+  books: [Book!]!
+
   """The author's ID"""
-  id: String!
+  id: Float!
 
   """The author's name"""
   name: String!
@@ -15,13 +18,30 @@ type Book {
   author: Author!
 
   """The book's ID"""
-  id: String!
+  id: Float!
+
+  """The book's title"""
+  title: String!
+}
+
+type Mutation {
+  createAuthor(name: String!): Author!
+  createBook(authorId: Int!, title: String!): Book!
+  createBookBis(newBookArgs: NewBookInput!): Book!
+  removeAuthor(id: Int!): Author!
+  removeBook(id: Int!): Book!
+}
+
+input NewBookInput {
+  """The author's ID"""
+  authorId: Float!
 
   """The book's title"""
   title: String!
 }
 
 type Query {
-  author(id: String!): Author!
-  book(id: String!): Book!
+  author(id: Int!): Author!
+  book(id: Int!): Book!
+  booksByAuthor(authorId: Int!): [Book!]!
 }

@@ -50,4 +50,15 @@ export class BooksService {
       },
     });
   }
+
+  async findManyByAuthor(authorId: number): Promise<BookModel[]> {
+    return this.prismaService.book.findMany({
+      where: {
+        authorId,
+      },
+      include: {
+        author: true,
+      },
+    });
+  }
 }

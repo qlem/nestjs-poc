@@ -12,6 +12,9 @@ export class AuthorsService {
       data: {
         name,
       },
+      include: {
+        books: true,
+      },
     });
   }
 
@@ -20,6 +23,9 @@ export class AuthorsService {
       where: {
         id,
       },
+      include: {
+        books: true,
+      },
     });
   }
 
@@ -27,6 +33,9 @@ export class AuthorsService {
     return this.prismaService.author.findUnique({
       where: {
         id,
+      },
+      include: {
+        books: true,
       },
     });
   }
