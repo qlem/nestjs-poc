@@ -10,6 +10,6 @@ export class Book {
   @Field({ description: "The book's title" })
   title: string;
 
-  @Field((type) => Author, { description: "The book's author" })
+  @Field(() => Author, { description: "The book's author" })
   author: Author;
 }
