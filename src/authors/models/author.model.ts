@@ -12,4 +12,7 @@ export class Author {
 
   @Field(() => [Book], { description: 'Books written by the author' })
   books: Book[];
+
+  @Field({ description: 'Number of books written by the author' })
+  countBooks: number;
 }

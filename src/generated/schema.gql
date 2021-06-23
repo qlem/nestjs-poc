@@ -6,6 +6,9 @@ type Author {
   """Books written by the author"""
   books: [Book!]!
 
+  """Number of books written by the author"""
+  countBooks: Float!
+
   """The author's ID"""
   id: Float!
 
@@ -25,10 +28,19 @@ type Book {
 }
 
 type Mutation {
+  """Mutation used to fetch create a new author"""
   createAuthor(name: String!): Author!
+
+  """Mutation used to create a new book"""
   createBook(authorId: Int!, title: String!): Book!
+
+  """Mutation used to create a new book"""
   createBookBis(newBookArgs: NewBookInput!): Book!
+
+  """Mutation used to remove a author by id"""
   removeAuthor(id: Int!): Author!
+
+  """Mutation used to remove a book by id"""
   removeBook(id: Int!): Book!
 }
 
@@ -41,7 +53,12 @@ input NewBookInput {
 }
 
 type Query {
+  """Query used to fetch one author by id"""
   author(id: Int!): Author!
+
+  """Query used to fetch one book by id"""
   book(id: Int!): Book!
+
+  """Query used to fetch books by author"""
   booksByAuthor(authorId: Int!): [Book!]!
 }
