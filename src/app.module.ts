@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -13,7 +14,7 @@ import { BooksModule } from './books/books.module';
     AuthorsModule,
     BooksModule,
     GraphQLModule.forRoot({
-      autoSchemaFile: 'src/generated/schema.gql',
+      autoSchemaFile: join(process.cwd(), 'src/generated/schema.gql'),
       sortSchema: true,
     }),
   ],
