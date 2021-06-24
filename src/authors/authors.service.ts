@@ -29,6 +29,14 @@ export class AuthorsService {
     });
   }
 
+  async findMany(): Promise<AuthorModel[]> {
+    return this.prismaService.author.findMany({
+      include: {
+        books: false,
+      },
+    });
+  }
+
   async findOneById(id: number): Promise<AuthorModel> {
     return this.prismaService.author.findUnique({
       where: {

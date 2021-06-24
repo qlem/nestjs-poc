@@ -1,6 +1,5 @@
 import { Controller, Get, Inject, OnModuleInit, Param } from '@nestjs/common';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import {
   ClientGrpc,
   GrpcMethod,
@@ -39,21 +38,13 @@ export class BooksController implements OnModuleInit {
   }
 
   @Get('books')
-  getMany(): Observable<Book[]> {
-    const ids$ = new ReplaySubject<BookById>();
-    ids$.next({ id: 1 });
-    ids$.next({ id: 2 });
-    ids$.next({ id: 3 });
-    ids$.complete();
-
-    const stream = this.bookProtoService.findMany(ids$.asObservable());
-    console.log('stream');
-    return stream.pipe(toArray());
+  async getMany(): Promise<Book[]> {
+    return this.booksService.findMany();
   }
 
   @Get('books/:id')
   getById(@Param('id') id: number): Observable<Book> {
-    return this.bookProtoService.findOne({ id: +id });
+    return this.bookProtoService.findOne({ id });
   }
 
   @GrpcMethod('BookService')
@@ -64,22 +55,15 @@ export class BooksController implements OnModuleInit {
   @GrpcStreamMethod('BookService')
   findMany(data$: Observable<BookById>): Observable<Book> {
     const book$ = new Subject<Book>();
-
     const onNext = async ({ id }: BookById) => {
-      console.log('id', id);
       const book = await this.booksService.findOneById(id);
-      console.log('book', book);
       book$.next(book);
     };
-    const onComplete = () => {
-      console.log('complete');
-      book$.complete();
-    };
+
     data$.subscribe({
       next: onNext,
-      complete: onComplete,
+      complete: () => book$.complete(),
     });
-
     return book$.asObservable();
   }
 }

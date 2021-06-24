@@ -38,20 +38,13 @@ export class AuthorsController implements OnModuleInit {
   }
 
   @Get('authors')
-  getMany(): Observable<Author[]> {
-    const ids$ = new ReplaySubject<AuthorById>();
-    ids$.next({ id: 1 });
-    ids$.next({ id: 2 });
-    ids$.complete();
-
-    const stream = this.authorProtoService.findMany(ids$.asObservable());
-    console.log('stream');
-    return stream.pipe(toArray());
+  async getMany(): Promise<Author[]> {
+    return this.authorsService.findMany();
   }
 
   @Get('authors/:id')
   getById(@Param('id') id: number): Observable<Author> {
-    return this.authorProtoService.findOne({ id: +id });
+    return this.authorProtoService.findOne({ id });
   }
 
   @GrpcMethod('AuthorService')
@@ -62,22 +55,15 @@ export class AuthorsController implements OnModuleInit {
   @GrpcStreamMethod('AuthorService')
   findMany(data$: Observable<AuthorById>): Observable<Author> {
     const author$ = new Subject<Author>();
-
     const onNext = async ({ id }: AuthorById) => {
-      console.log('id', id);
       const author = await this.authorsService.findOneById(id);
-      console.log('author', author);
       author$.next(author);
     };
-    const onComplete = () => {
-      console.log('complete');
-      author$.complete();
-    };
+
     data$.subscribe({
       next: onNext,
-      complete: onComplete,
+      complete: () => author$.complete(),
     });
-
     return author$.asObservable();
   }
 }
