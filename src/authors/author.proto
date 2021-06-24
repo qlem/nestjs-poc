@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package author;
+
+service AuthorService {
+  rpc FindOne (AuthorById) returns (Author);
+  rpc FindMany (stream AuthorById) returns (stream Author);
+}
+
+message AuthorById {
+  int32 id = 1;
+}
+
+message Author {
+  int32 id = 1;
+  string name = 2;
+}

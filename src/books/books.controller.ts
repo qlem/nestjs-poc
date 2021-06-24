@@ -9,14 +9,14 @@ import {
 
 import { BooksService } from './books.service';
 
+interface BookById {
+  id: number;
+}
+
 interface Book {
   id: number;
   title: string;
   authorId: number;
-}
-
-interface BookById {
-  id: number;
 }
 
 interface BookProtoService {
@@ -47,6 +47,7 @@ export class BooksController implements OnModuleInit {
     ids$.complete();
 
     const stream = this.bookProtoService.findMany(ids$.asObservable());
+    console.log('stream');
     return stream.pipe(toArray());
   }
 
@@ -65,10 +66,15 @@ export class BooksController implements OnModuleInit {
     const book$ = new Subject<Book>();
 
     const onNext = async ({ id }: BookById) => {
+      console.log('id', id);
       const book = await this.booksService.findOneById(id);
+      console.log('book', book);
       book$.next(book);
     };
-    const onComplete = () => book$.complete();
+    const onComplete = () => {
+      console.log('complete');
+      book$.complete();
+    };
     data$.subscribe({
       next: onNext,
       complete: onComplete,

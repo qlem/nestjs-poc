@@ -1,12 +1,21 @@
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 import { AppModule } from './app.module';
-import grpcOptions from './grpcClient.options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.connectMicroservice<MicroserviceOptions>(grpcOptions);
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.GRPC,
+    options: {
+      package: ['book', 'author'],
+      protoPath: [
+        join(__dirname, 'books/book.proto'),
+        join(__dirname, 'authors/author.proto'),
+      ],
+    },
+  });
 
   await app.startAllMicroservicesAsync();
   await app.listen(3000);
