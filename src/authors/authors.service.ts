@@ -3,7 +3,7 @@ import { Author, Book } from '@prisma/client';
 
 import { PrismaService } from '../core/prisma.service';
 
-type AuthorModel = Author & { books: Book[] };
+export type AuthorModel = Author & { books: Book[] };
 
 @Injectable()
 export class AuthorsService {

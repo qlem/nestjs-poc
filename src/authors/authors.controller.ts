@@ -6,20 +6,20 @@ import {
   GrpcStreamMethod,
 } from '@nestjs/microservices';
 
-import { AuthorsService } from './authors.service';
+import { AuthorsService, AuthorModel } from './authors.service';
 
-interface AuthorById {
+interface GrpcAuthorQuery {
   id: number;
 }
 
-interface Author {
+interface GrpcAuthorModel {
   id: number;
   name: string;
 }
 
 interface AuthorProtoService {
-  findOne(data: AuthorById): Observable<Author>;
-  findMany(upstream: Observable<AuthorById>): Observable<Author>;
+  findOne(data: GrpcAuthorQuery): Observable<GrpcAuthorModel>;
+  findMany(upstream: Observable<GrpcAuthorQuery>): Observable<GrpcAuthorModel>;
 }
 
 @Controller()
@@ -37,24 +37,24 @@ export class AuthorsController implements OnModuleInit {
   }
 
   @Get('authors')
-  async getMany(): Promise<Author[]> {
+  async getMany(): Promise<AuthorModel[]> {
     return this.authorsService.findMany();
   }
 
   @Get('authors/:id')
-  async getById(@Param('id') id: string): Promise<Author> {
+  async getById(@Param('id') id: string): Promise<AuthorModel> {
     return this.authorsService.findOneById(+id);
   }
 
   @GrpcMethod('AuthorService')
-  async findOne(data: AuthorById): Promise<Author> {
+  async findOne(data: GrpcAuthorQuery): Promise<GrpcAuthorModel> {
     return this.authorsService.findOneById(data.id);
   }
 
   @GrpcStreamMethod('AuthorService')
-  findMany(data$: Observable<AuthorById>): Observable<Author> {
-    const author$ = new Subject<Author>();
-    const onNext = async ({ id }: AuthorById) => {
+  findMany(data$: Observable<GrpcAuthorQuery>): Observable<GrpcAuthorModel> {
+    const author$ = new Subject<GrpcAuthorModel>();
+    const onNext = async ({ id }: GrpcAuthorQuery) => {
       const author = await this.authorsService.findOneById(id);
       author$.next(author);
     };
