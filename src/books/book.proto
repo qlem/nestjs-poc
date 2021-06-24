@@ -3,11 +3,11 @@ syntax = "proto3";
 package book;
 
 service BookService {
-  rpc FindOne (BookById) returns (Book);
-  rpc FindMany (stream BookById) returns (stream Book);
+  rpc FindOne (BookQuery) returns (Book);
+  rpc FindMany (stream BookQuery) returns (stream Book);
 }
 
-message BookById {
+message BookQuery {
   int32 id = 1;
 }
 

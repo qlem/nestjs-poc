@@ -3,11 +3,11 @@ syntax = "proto3";
 package author;
 
 service AuthorService {
-  rpc FindOne (AuthorById) returns (Author);
-  rpc FindMany (stream AuthorById) returns (stream Author);
+  rpc FindOne (AuthorQuery) returns (Author);
+  rpc FindMany (stream AuthorQuery) returns (stream Author);
 }
 
-message AuthorById {
+message AuthorQuery {
   int32 id = 1;
 }
 
