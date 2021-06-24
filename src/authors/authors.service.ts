@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Author as AuthorModel } from '@prisma/client';
+import { Author, Book } from '@prisma/client';
 
 import { PrismaService } from '../core/prisma.service';
+
+type AuthorModel = Author & { books: Book[] };
 
 @Injectable()
 export class AuthorsService {
@@ -32,7 +34,7 @@ export class AuthorsService {
   async findMany(): Promise<AuthorModel[]> {
     return this.prismaService.author.findMany({
       include: {
-        books: false,
+        books: true,
       },
     });
   }

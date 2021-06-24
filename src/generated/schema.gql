@@ -28,7 +28,7 @@ type Book {
 }
 
 type Mutation {
-  """Mutation used to fetch create a new author"""
+  """Mutation used to create a new author"""
   createAuthor(name: String!): Author!
 
   """Mutation used to create a new book"""
@@ -37,7 +37,7 @@ type Mutation {
   """Mutation used to create a new book"""
   createBookBis(newBookArgs: NewBookInput!): Book!
 
-  """Mutation used to remove a author by id"""
+  """Mutation used to remove an author by id"""
   removeAuthor(id: Int!): Author!
 
   """Mutation used to remove a book by id"""

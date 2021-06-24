@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Book as BookModel } from '@prisma/client';
+import { Book as BookModel, Author as AuthorModel } from '@prisma/client';
 
 import { PrismaService } from '../core/prisma.service';
+
+type BookWithAuthorModel = BookModel & { author: AuthorModel };
 
 @Injectable()
 export class BooksService {
@@ -13,7 +15,7 @@ export class BooksService {
   }: {
     title: string;
     authorId: number;
-  }): Promise<BookModel> {
+  }): Promise<BookWithAuthorModel> {
     return this.prismaService.book.create({
       data: {
         title,
@@ -29,7 +31,7 @@ export class BooksService {
     });
   }
 
-  async removeOneById(id: number): Promise<BookModel> {
+  async removeOneById(id: number): Promise<BookWithAuthorModel> {
     return this.prismaService.book.delete({
       where: {
         id,
@@ -40,15 +42,15 @@ export class BooksService {
     });
   }
 
-  async findMany(): Promise<BookModel[]> {
+  async findMany(): Promise<BookWithAuthorModel[]> {
     return this.prismaService.book.findMany({
       include: {
-        author: false,
+        author: true,
       },
     });
   }
 
-  async findOneById(id: number): Promise<BookModel> {
+  async findOneById(id: number): Promise<BookWithAuthorModel> {
     return this.prismaService.book.findUnique({
       where: {
         id,
@@ -59,7 +61,7 @@ export class BooksService {
     });
   }
 
-  async findManyByAuthor(authorId: number): Promise<BookModel[]> {
+  async findManyByAuthor(authorId: number): Promise<BookWithAuthorModel[]> {
     return this.prismaService.book.findMany({
       where: {
         authorId,

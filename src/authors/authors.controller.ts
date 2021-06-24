@@ -1,6 +1,5 @@
 import { Controller, Get, Inject, OnModuleInit, Param } from '@nestjs/common';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import {
   ClientGrpc,
   GrpcMethod,

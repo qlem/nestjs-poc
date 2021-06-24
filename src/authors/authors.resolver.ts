@@ -21,14 +21,14 @@ export class AuthorsResolver {
   }
 
   @Mutation(() => Author, {
-    description: 'Mutation used to fetch create a new author',
+    description: 'Mutation used to create a new author',
   })
   async createAuthor(@Args('name', { type: () => String }) name: string) {
     return this.authorsService.createOne({ name });
   }
 
   @Mutation(() => Author, {
-    description: 'Mutation used to remove a author by id',
+    description: 'Mutation used to remove an author by id',
   })
   async removeAuthor(@Args('id', { type: () => Int }) id: number) {
     return this.authorsService.removeOneById(id);
