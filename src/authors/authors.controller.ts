@@ -42,8 +42,8 @@ export class AuthorsController implements OnModuleInit {
   }
 
   @Get('authors/:id')
-  getById(@Param('id') id: number): Observable<Author> {
-    return this.authorProtoService.findOne({ id });
+  async getById(@Param('id') id: string): Promise<Author> {
+    return this.authorsService.findOneById(+id);
   }
 
   @GrpcMethod('AuthorService')

@@ -43,8 +43,8 @@ export class BooksController implements OnModuleInit {
   }
 
   @Get('books/:id')
-  getById(@Param('id') id: number): Observable<Book> {
-    return this.bookProtoService.findOne({ id });
+  async getById(@Param('id') id: string): Promise<Book> {
+    return this.booksService.findOneById(+id);
   }
 
   @GrpcMethod('BookService')
