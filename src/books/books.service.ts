@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Book, Author } from '@prisma/client';
 
+import { MethodLogger } from '../decorators';
 import { PrismaService } from '../core/prisma.service';
 
 export type BookModel = Book & { author: Author };
@@ -50,6 +51,7 @@ export class BooksService {
     });
   }
 
+  @MethodLogger()
   async findOneById(id: number): Promise<BookModel> {
     return this.prismaService.book.findUnique({
       where: {

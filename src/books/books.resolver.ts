@@ -1,5 +1,7 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { MethodLogger } from '../decorators';
+
 import { Book } from './models/book.model';
 import { BooksService } from './books.service';
 import { NewBookInput } from './dto/newBook.input';
@@ -9,6 +11,7 @@ export class BooksResolver {
   constructor(private booksService: BooksService) {}
 
   @Query(() => Book, { description: 'Query used to fetch one book by id' })
+  @MethodLogger()
   async book(@Args('id', { type: () => Int }) id: number) {
     return this.booksService.findOneById(id);
   }
