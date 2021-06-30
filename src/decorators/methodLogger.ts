@@ -52,7 +52,7 @@ function MethodLogger({
             logger.error(logMessage(`${err.name}: ${err.message}`)),
           );
         }
-      } else if (logSuccess) {
+      } else {
         logger.info(logMessage('called successfully'));
       }
       return result;

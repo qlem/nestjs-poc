@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
+import { logger } from './utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -23,8 +24,8 @@ async function bootstrap() {
   await app.startAllMicroservicesAsync();
   await app.listen(port);
 
-  console.log(`gRPC    server is running on localhost:${grpcPort}`);
-  console.log(`REST    server is running on http://localhost:${port}`);
-  console.log(`GraphQL server is running on http://localhost:${port}/graphql`);
+  logger.info(`gRPC    server is running on localhost:${grpcPort}`);
+  logger.info(`REST    server is running on http://localhost:${port}`);
+  logger.info(`GraphQL server is running on http://localhost:${port}/graphql`);
 }
 bootstrap();
