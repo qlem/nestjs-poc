@@ -17,11 +17,13 @@ export class BooksResolver {
   }
 
   @Query(() => [Book], { description: 'Query used to fetch books by author' })
+  @MethodLogger()
   async booksByAuthor(@Args('authorId', { type: () => Int }) authorId: number) {
     return this.booksService.findManyByAuthor(authorId);
   }
 
   @Mutation(() => Book, { description: 'Mutation used to create a new book' })
+  @MethodLogger()
   async createBook(
     @Args('title', { type: () => String }) title: string,
     @Args('authorId', { type: () => Int }) authorId: number,
@@ -30,12 +32,14 @@ export class BooksResolver {
   }
 
   @Mutation(() => Book, { description: 'Mutation used to create a new book' })
+  @MethodLogger()
   async createBookBis(@Args('newBookArgs') newBookArgs: NewBookInput) {
     const { title, authorId } = newBookArgs;
     return this.booksService.createOne({ title, authorId });
   }
 
   @Mutation(() => Book, { description: 'Mutation used to remove a book by id' })
+  @MethodLogger()
   async removeBook(@Args('id', { type: () => Int }) id: number) {
     return this.booksService.removeOneById(id);
   }

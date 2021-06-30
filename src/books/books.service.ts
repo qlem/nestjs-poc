@@ -10,6 +10,7 @@ export type BookModel = Book & { author: Author };
 export class BooksService {
   constructor(private prismaService: PrismaService) {}
 
+  @MethodLogger()
   async createOne({
     title,
     authorId,
@@ -32,6 +33,7 @@ export class BooksService {
     });
   }
 
+  @MethodLogger()
   async removeOneById(id: number): Promise<BookModel> {
     return this.prismaService.book.delete({
       where: {
@@ -43,6 +45,7 @@ export class BooksService {
     });
   }
 
+  @MethodLogger()
   async findMany(): Promise<BookModel[]> {
     return this.prismaService.book.findMany({
       include: {
@@ -63,6 +66,7 @@ export class BooksService {
     });
   }
 
+  @MethodLogger()
   async findManyByAuthor(authorId: number): Promise<BookModel[]> {
     return this.prismaService.book.findMany({
       where: {

@@ -7,24 +7,29 @@ interface MethodLoggerParams {
   timed?: boolean;
 }
 
-function MethodLogger(
-  { className, logError, logSuccess, timed }: MethodLoggerParams = {
-    logError: true,
-    logSuccess: true,
-    timed: true,
-  },
-) {
+function MethodLogger({
+  className,
+  logError,
+  logSuccess,
+  timed,
+}: MethodLoggerParams = {}) {
+  const options = {
+    logError: logError === undefined || logError,
+    logSuccess: logSuccess === undefined || logSuccess,
+    timed: timed === undefined || timed,
+  };
   return (
     target: any,
     propertyKey: string,
     descriptor: PropertyDescriptor,
   ): PropertyDescriptor => {
+    const { logError, logSuccess, timed } = options;
     const originalMethod = descriptor.value;
-    const title = className || target.constructor.name;
+    const head = className || target.constructor.name;
     const logMessage = (message: string, time?: number) =>
       timed && time
-        ? `${title}:${propertyKey} - ${message} in ${time}ms`
-        : `${title}:${propertyKey} - ${message}`;
+        ? `${head}:${propertyKey} - ${message} in ${time}ms`
+        : `${head}:${propertyKey} - ${message}`;
 
     descriptor.value = function method(...args: any[]) {
       const boundOriginalMethod = originalMethod.bind(this);

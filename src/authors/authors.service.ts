@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Author, Book } from '@prisma/client';
 
+import { MethodLogger } from '../decorators';
 import { PrismaService } from '../core/prisma.service';
 
 export type AuthorModel = Author & { books: Book[] };
@@ -9,6 +10,7 @@ export type AuthorModel = Author & { books: Book[] };
 export class AuthorsService {
   constructor(private prismaService: PrismaService) {}
 
+  @MethodLogger()
   async createOne({ name }: { name: string }): Promise<AuthorModel> {
     return this.prismaService.author.create({
       data: {
@@ -20,6 +22,7 @@ export class AuthorsService {
     });
   }
 
+  @MethodLogger()
   async removeOneById(id: number): Promise<AuthorModel> {
     return this.prismaService.author.delete({
       where: {
@@ -31,6 +34,7 @@ export class AuthorsService {
     });
   }
 
+  @MethodLogger()
   async findMany(): Promise<AuthorModel[]> {
     return this.prismaService.author.findMany({
       include: {
@@ -39,6 +43,7 @@ export class AuthorsService {
     });
   }
 
+  @MethodLogger()
   async findOneById(id: number): Promise<AuthorModel> {
     return this.prismaService.author.findUnique({
       where: {
