@@ -6,6 +6,8 @@ import {
   GrpcStreamMethod,
 } from '@nestjs/microservices';
 
+import { MethodLogger } from '../decorators';
+
 import { AuthorsService, AuthorModel } from './authors.service';
 
 interface GrpcAuthorQuery {
@@ -47,11 +49,13 @@ export class AuthorsController implements OnModuleInit {
   }
 
   @GrpcMethod('AuthorService')
+  @MethodLogger({ className: 'GrpcAuthors' })
   async findOne(data: GrpcAuthorQuery): Promise<GrpcAuthorModel> {
     return this.authorsService.findOneById(data.id);
   }
 
   @GrpcStreamMethod('AuthorService')
+  @MethodLogger({ className: 'GrpcAuthors' })
   findMany(data$: Observable<GrpcAuthorQuery>): Observable<GrpcAuthorModel> {
     const author$ = new Subject<GrpcAuthorModel>();
     const onNext = async ({ id }: GrpcAuthorQuery) => {
