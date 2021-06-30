@@ -3,12 +3,18 @@ import { Author, Book } from '@prisma/client';
 
 import { MethodLogger } from '../decorators';
 import { PrismaService } from '../core/prisma.service';
+import { LoggerService } from '../core/logger.service';
 
 export type AuthorModel = Author & { books: Book[] };
 
 @Injectable()
 export class AuthorsService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private logger: LoggerService,
+    private prismaService: PrismaService,
+  ) {
+    this.logger.setContext(AuthorsService.name);
+  }
 
   @MethodLogger()
   async createOne({ name }: { name: string }): Promise<AuthorModel> {

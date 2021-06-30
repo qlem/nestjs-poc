@@ -4,11 +4,14 @@ import { join } from 'path';
 
 import { logger } from './utils';
 import { AppModule } from './app.module';
+import { LoggerService } from './core/logger.service';
 
 async function bootstrap() {
   const port = process.env.PORT;
   const grpcPort = process.env.GRPC_PORT;
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: false,
+  });
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
@@ -21,6 +24,7 @@ async function bootstrap() {
     },
   });
 
+  app.useLogger(new LoggerService());
   await app.startAllMicroservicesAsync();
   await app.listen(port);
 
