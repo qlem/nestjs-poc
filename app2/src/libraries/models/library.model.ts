@@ -11,6 +11,6 @@ export class Library {
   @Field({ description: "The library's name" })
   name: string;
 
-  /*@Field(() => [Book], { description: 'Books in the library' })
-  books: Book[];*/
+  /* @Field(() => [Book], { description: 'Books in the library' })
+  books: Book[]; */
 }
