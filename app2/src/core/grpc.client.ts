@@ -50,11 +50,11 @@ export class GrpcClient {
   @MethodLogger()
   async findOne(id: number): Promise<GrpcBookModel> {
     return new Promise((resolve, reject) => {
-      this.client.findOne({ id }, (err, doc) => {
+      this.client.findOne({ id }, (err, book) => {
         if (err) {
           reject(err);
         } else {
-          resolve(doc);
+          resolve(book);
         }
       });
     });
