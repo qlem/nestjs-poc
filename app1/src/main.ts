@@ -10,7 +10,7 @@ async function bootstrap() {
   const port = process.env.PORT;
   const grpcPort = process.env.GRPC_PORT;
   const app = await NestFactory.create(AppModule, {
-    logger: false,
+    logger: true,
   });
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,

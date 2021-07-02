@@ -18,7 +18,8 @@ export class LibrariesResolver {
   })
   @MethodLogger()
   async library(@Args('id', { type: () => Int }) id: number) {
-    this.grpcClient.call(1);
+    const book = await this.grpcClient.call(1);
+    console.log(book);
     return this.libraryService.findOneById(id);
   }
 

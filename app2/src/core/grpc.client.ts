@@ -1,14 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { loadPackageDefinition, credentials } from '@grpc/grpc-js';
-import protoLoader from '@grpc/proto-loader';
+import { loadSync } from '@grpc/proto-loader';
 import { join } from 'path';
+import { MethodLogger } from '../decorators';
+
+interface Book {
+  id: number;
+  title: string;
+  authorId: number;
+}
+
+interface BookQuery {
+  id: number;
+}
+
+interface BookClient {
+  findOne: (
+    query: BookQuery,
+    callback: (err: Error, book: Book) => void,
+  ) => void;
+  findMany: (query: BookQuery) => void;
+}
 
 @Injectable()
 export class GrpcClient {
-  private client: any;
+  private client: BookClient;
 
   constructor() {
-    const packageDefinition = protoLoader.loadSync(
+    const packageDefinition = loadSync(
       join(__dirname, '../../../proto/book.proto'),
       {
         keepCase: true,
@@ -18,7 +37,7 @@ export class GrpcClient {
         oneofs: true,
       },
     );
-    const service = loadPackageDefinition(packageDefinition).bookservice;
+    const service = loadPackageDefinition(packageDefinition).book;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.client = new service.BookService(
@@ -27,13 +46,16 @@ export class GrpcClient {
     );
   }
 
-  call(id: number) {
-    this.client.findOne({ id }, (err, doc) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('doc', doc);
-      }
+  @MethodLogger()
+  async call(id: number): Promise<Book> {
+    return new Promise((resolve, reject) => {
+      this.client.findOne({ id }, (err, doc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(doc);
+        }
+      });
     });
   }
 }
