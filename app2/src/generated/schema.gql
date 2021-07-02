@@ -2,63 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Author {
-  """Books written by the author"""
-  books: [Book!]!
-
-  """Number of books written by the author"""
-  countBooks: Float!
-
-  """The author's ID"""
+type Library {
+  """The library's ID"""
   id: Float!
 
-  """The author's name"""
+  """The library's name"""
   name: String!
 }
 
-type Book {
-  """The book's author"""
-  author: Author!
-
-  """The book's ID"""
-  id: Float!
-
-  """The book's title"""
-  title: String!
-}
-
 type Mutation {
-  """Mutation used to create a new author"""
-  createAuthor(name: String!): Author!
+  """Mutation used to create a new library"""
+  createLibrary(name: String!): Library!
 
-  """Mutation used to create a new book"""
-  createBook(authorId: Int!, title: String!): Book!
-
-  """Mutation used to create a new book"""
-  createBookBis(newBookArgs: NewBookInput!): Book!
-
-  """Mutation used to remove an author by id"""
-  removeAuthor(id: Int!): Author!
-
-  """Mutation used to remove a book by id"""
-  removeBook(id: Int!): Book!
-}
-
-input NewBookInput {
-  """The author's ID"""
-  authorId: Float!
-
-  """The book's title"""
-  title: String!
+  """Mutation used to remove a library by id"""
+  removeLibrary(id: Int!): Library!
 }
 
 type Query {
-  """Query used to fetch one author by id"""
-  author(id: Int!): Author!
-
-  """Query used to fetch one book by id"""
-  book(id: Int!): Book!
-
-  """Query used to fetch books by author"""
-  booksByAuthor(authorId: Int!): [Book!]!
+  """Query used to fetch one library by id"""
+  library(id: Int!): Library!
 }

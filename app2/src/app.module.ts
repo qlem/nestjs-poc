@@ -13,7 +13,6 @@ import { LoggerMiddleware } from './middleware';
   providers: [AppService],
   imports: [
     LibrariesModule,
-    LibrariesController,
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/generated/schema.gql'),
       sortSchema: true,
