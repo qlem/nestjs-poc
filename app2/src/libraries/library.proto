@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package library;
+
+service LibraryService {
+  rpc FindOne (LibraryQuery) returns (Library);
+  rpc FindMany (stream LibraryQuery) returns (stream Library);
+}
+
+message LibraryQuery {
+  int32 id = 1;
+}
+
+message Library {
+  int32 id = 1;
+  string name = 2;
+}
