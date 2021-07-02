@@ -41,4 +41,4 @@ class LibrariesService {
   }
 }
 
-export { LibrariesService, LibraryModel };
+export { LibrariesService };

@@ -13,5 +13,5 @@ generator client {
 model Library {
   id        Int       @default(autoincrement()) @id
   name      String
-  // todo bookIds[]
+  bookIds   Int[]
 }

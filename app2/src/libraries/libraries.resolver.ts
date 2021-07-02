@@ -1,8 +1,19 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Library as LibraryModel } from '@prisma/client';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 
 import { MethodLogger } from '../decorators';
 import { GrpcClient } from '../core/grpc.client';
+import { GrpcBookModel as BookGrpcModel } from '../core/grpc.client';
 
+import { Book } from './models/book.model';
 import { Library } from './models/library.model';
 import { LibrariesService } from './libraries.service';
 
@@ -18,8 +29,6 @@ export class LibrariesResolver {
   })
   @MethodLogger()
   async library(@Args('id', { type: () => Int }) id: number) {
-    const book = await this.grpcClient.call(1);
-    console.log(book);
     return this.libraryService.findOneById(id);
   }
 
@@ -37,5 +46,11 @@ export class LibrariesResolver {
   @MethodLogger()
   async removeLibrary(@Args('id', { type: () => Int }) id: number) {
     return this.libraryService.removeOneById(id);
+  }
+
+  @ResolveField(() => [Book])
+  async books(@Parent() library: LibraryModel): Promise<BookGrpcModel[]> {
+    const { bookIds } = library;
+    return this.grpcClient.findMany(bookIds);
   }
 }

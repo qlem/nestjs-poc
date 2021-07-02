@@ -8,6 +8,8 @@ import { LibrariesController } from './libraries.controller';
 import { LibrariesResolver } from './libraries.resolver';
 import { LibrariesService } from './libraries.service';
 
+console.log(join(process.cwd(), './../proto/library.proto'));
+
 @Module({
   controllers: [LibrariesController],
   providers: [LibrariesResolver, LibrariesService],
@@ -18,7 +20,7 @@ import { LibrariesService } from './libraries.service';
         transport: Transport.GRPC,
         options: {
           package: 'library',
-          protoPath: join(__dirname, 'library.proto'),
+          protoPath: join(process.cwd(), './../proto/library.proto'),
         },
       },
     ]),

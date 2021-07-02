@@ -1,5 +1,6 @@
 import { Controller, Get, Inject, OnModuleInit, Param } from '@nestjs/common';
 import { Observable, Subject } from 'rxjs';
+import { Library as LibraryModel } from '@prisma/client';
 import {
   ClientGrpc,
   GrpcMethod,
@@ -8,7 +9,7 @@ import {
 
 import { MethodLogger } from '../decorators';
 
-import { LibrariesService, LibraryModel } from './libraries.service';
+import { LibrariesService } from './libraries.service';
 
 interface GrpcLibraryQuery {
   id: number;

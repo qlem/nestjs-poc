@@ -2,7 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Book {
+  """The book's author ID"""
+  authorId: Float!
+
+  """The book's ID"""
+  id: Float!
+
+  """The book's title"""
+  title: String!
+}
+
 type Library {
+  """Books in the library"""
+  books: [Book!]!
+
   """The library's ID"""
   id: Float!
 

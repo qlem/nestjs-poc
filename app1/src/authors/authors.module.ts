@@ -18,7 +18,7 @@ import { AuthorsService } from './authors.service';
         transport: Transport.GRPC,
         options: {
           package: 'author',
-          protoPath: join(__dirname, 'author.proto'),
+          protoPath: join(process.cwd(), './../proto/author.proto'),
         },
       },
     ]),
