@@ -14,7 +14,7 @@ import { LibrariesService } from './libraries.service';
   imports: [
     ClientsModule.register([
       {
-        name: 'BOOK_PACKAGE',
+        name: 'LIBRARY_PACKAGE',
         transport: Transport.GRPC,
         options: {
           package: 'library',

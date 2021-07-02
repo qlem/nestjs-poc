@@ -9,25 +9,24 @@ import { LibrariesService } from './libraries.service';
 export class LibrariesResolver {
   constructor(private LibraryService: LibrariesService) {}
 
-  @Query(() => Library, { description: 'Query used to fetch one book by id' })
+  @Query(() => Library, {
+    description: 'Query used to fetch one library by id',
+  })
   @MethodLogger()
   async library(@Args('id', { type: () => Int }) id: number) {
     return this.LibraryService.findOneById(id);
   }
 
   @Mutation(() => Library, {
-    description: 'Mutation used to create a new book',
+    description: 'Mutation used to create a new library',
   })
   @MethodLogger()
-  async createLibrary(
-    @Args('title', { type: () => String }) title: string,
-    @Args('authorId', { type: () => Int }) authorId: number,
-  ) {
-    return this.LibraryService.createOne({ title, authorId });
+  async createLibrary(@Args('name', { type: () => String }) name: string) {
+    return this.LibraryService.createOne({ name });
   }
 
   @Mutation(() => Library, {
-    description: 'Mutation used to remove a book by id',
+    description: 'Mutation used to remove a library by id',
   })
   @MethodLogger()
   async removeLibrary(@Args('id', { type: () => Int }) id: number) {

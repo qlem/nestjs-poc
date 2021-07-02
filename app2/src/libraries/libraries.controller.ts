@@ -8,66 +8,67 @@ import {
 
 import { MethodLogger } from '../decorators';
 
-import { BooksService, BookModel } from './libraries.service';
+import { LibrariesService, LibraryModel } from './libraries.service';
 
-interface GrpcBookQuery {
+interface GrpcLibraryQuery {
   id: number;
 }
 
-interface GrpcBookModel {
+interface GrpcLibraryModel {
   id: number;
-  title: string;
-  authorId: number;
+  name: string;
 }
 
-interface BookProtoService {
-  findOne(data: GrpcBookQuery): Observable<GrpcBookModel>;
-  findMany(upstream: Observable<GrpcBookQuery>): Observable<GrpcBookModel>;
+interface LibraryProtoService {
+  findOne(data: GrpcLibraryQuery): Observable<GrpcLibraryModel>;
+  findMany(
+    upstream: Observable<GrpcLibraryQuery>,
+  ): Observable<GrpcLibraryModel>;
 }
 
 @Controller()
 export class LibrariesController implements OnModuleInit {
-  private bookProtoService: BookProtoService;
+  private LibraryProtoService: LibraryProtoService;
 
   constructor(
-    @Inject('BOOK_PACKAGE') private readonly client: ClientGrpc,
-    private booksService: BooksService,
+    @Inject('LIBRARY_PACKAGE') private readonly client: ClientGrpc,
+    private LibraryService: LibrariesService,
   ) {}
 
   onModuleInit() {
-    this.bookProtoService =
-      this.client.getService<BookProtoService>('BookService');
+    this.LibraryProtoService =
+      this.client.getService<LibraryProtoService>('LibraryService');
   }
 
-  @Get('books')
-  async getMany(): Promise<BookModel[]> {
-    return this.booksService.findMany();
+  @Get('libraries')
+  async getMany(): Promise<LibraryModel[]> {
+    return this.LibraryService.findMany();
   }
 
-  @Get('books/:id')
-  async getById(@Param('id') id: string): Promise<BookModel> {
-    return this.booksService.findOneById(+id);
+  @Get('libraries/:id')
+  async getById(@Param('id') id: string): Promise<LibraryModel> {
+    return this.LibraryService.findOneById(+id);
   }
 
-  @GrpcMethod('BookService')
-  @MethodLogger({ className: 'GrpcBooks' })
-  async findOne(data: GrpcBookQuery): Promise<GrpcBookModel> {
-    return this.booksService.findOneById(data.id);
+  @GrpcMethod('LibraryService')
+  @MethodLogger({ className: 'GrpcLibraries' })
+  async findOne(data: GrpcLibraryQuery): Promise<GrpcLibraryModel> {
+    return this.LibraryService.findOneById(data.id);
   }
 
-  @GrpcStreamMethod('BookService')
-  @MethodLogger({ className: 'GrpcBooks' })
-  findMany(data$: Observable<GrpcBookQuery>): Observable<GrpcBookModel> {
-    const book$ = new Subject<GrpcBookModel>();
-    const onNext = async ({ id }: GrpcBookQuery) => {
-      const book = await this.booksService.findOneById(id);
-      book$.next(book);
+  @GrpcStreamMethod('LibraryService')
+  @MethodLogger({ className: 'GrpcLibraries' })
+  findMany(data$: Observable<GrpcLibraryQuery>): Observable<GrpcLibraryModel> {
+    const library$ = new Subject<GrpcLibraryModel>();
+    const onNext = async ({ id }: GrpcLibraryQuery) => {
+      const library = await this.LibraryService.findOneById(id);
+      library$.next(library);
     };
 
     data$.subscribe({
       next: onNext,
-      complete: () => book$.complete(),
+      complete: () => library$.complete(),
     });
-    return book$.asObservable();
+    return library$.asObservable();
   }
 }
