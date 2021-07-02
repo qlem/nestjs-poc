@@ -28,7 +28,7 @@ interface LibraryProtoService {
 
 @Controller()
 export class LibrariesController implements OnModuleInit {
-  private LibraryProtoService: LibraryProtoService;
+  private libraryProtoService: LibraryProtoService;
 
   constructor(
     @Inject('LIBRARY_PACKAGE') private readonly client: ClientGrpc,
@@ -36,7 +36,7 @@ export class LibrariesController implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    this.LibraryProtoService =
+    this.libraryProtoService =
       this.client.getService<LibraryProtoService>('LibraryService');
   }
 

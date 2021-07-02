@@ -1,20 +1,25 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { MethodLogger } from '../decorators';
+import { GrpcClient } from '../core/grpc.client';
 
 import { Library } from './models/library.model';
 import { LibrariesService } from './libraries.service';
 
 @Resolver(() => Library)
 export class LibrariesResolver {
-  constructor(private LibraryService: LibrariesService) {}
+  constructor(
+    private libraryService: LibrariesService,
+    private grpcClient: GrpcClient,
+  ) {}
 
   @Query(() => Library, {
     description: 'Query used to fetch one library by id',
   })
   @MethodLogger()
   async library(@Args('id', { type: () => Int }) id: number) {
-    return this.LibraryService.findOneById(id);
+    this.grpcClient.call(1);
+    return this.libraryService.findOneById(id);
   }
 
   @Mutation(() => Library, {
@@ -22,7 +27,7 @@ export class LibrariesResolver {
   })
   @MethodLogger()
   async createLibrary(@Args('name', { type: () => String }) name: string) {
-    return this.LibraryService.createOne({ name });
+    return this.libraryService.createOne({ name });
   }
 
   @Mutation(() => Library, {
@@ -30,6 +35,6 @@ export class LibrariesResolver {
   })
   @MethodLogger()
   async removeLibrary(@Args('id', { type: () => Int }) id: number) {
-    return this.LibraryService.removeOneById(id);
+    return this.libraryService.removeOneById(id);
   }
 }
