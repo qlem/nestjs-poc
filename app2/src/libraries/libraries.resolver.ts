@@ -49,6 +49,7 @@ export class LibrariesResolver {
   }
 
   @ResolveField(() => [Book])
+  @MethodLogger()
   async books(@Parent() library: LibraryModel): Promise<BookGrpcModel[]> {
     const { bookIds } = library;
     return this.grpcClient.findMany(bookIds);

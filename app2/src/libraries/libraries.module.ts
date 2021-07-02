@@ -20,7 +20,7 @@ console.log(join(process.cwd(), './../proto/library.proto'));
         transport: Transport.GRPC,
         options: {
           package: 'library',
-          protoPath: join(process.cwd(), './../proto/library.proto'),
+          protoPath: join(process.cwd(), '../proto/library.proto'),
         },
       },
     ]),

@@ -17,7 +17,7 @@ async function bootstrap() {
     options: {
       url: `localhost:${grpcPort}`,
       package: 'library',
-      protoPath: join(process.cwd(), './../proto/library.proto'),
+      protoPath: join(process.cwd(), '../proto/library.proto'),
     },
   });
 

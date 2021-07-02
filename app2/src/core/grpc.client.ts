@@ -29,7 +29,7 @@ export class GrpcClient {
 
   constructor() {
     const packageDefinition = loadSync(
-      join(__dirname, '../../../proto/book.proto'),
+      join(process.cwd(), '../proto/book.proto'),
       {
         keepCase: true,
         longs: String,

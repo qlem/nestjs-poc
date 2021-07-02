@@ -18,8 +18,8 @@ async function bootstrap() {
       url: `localhost:${grpcPort}`,
       package: ['book', 'author'],
       protoPath: [
-        join(process.cwd(), './../proto/book.proto'),
-        join(process.cwd(), './../proto/author.proto'),
+        join(process.cwd(), '../proto/book.proto'),
+        join(process.cwd(), '../proto/author.proto'),
       ],
     },
   });

@@ -40,6 +40,7 @@ export class AuthorsResolver {
   }
 
   @ResolveField()
+  @MethodLogger()
   async countBooks(@Parent() author: Author) {
     const { books } = author;
     return books.length;

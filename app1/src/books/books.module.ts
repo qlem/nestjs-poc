@@ -18,7 +18,7 @@ import { BooksService } from './books.service';
         transport: Transport.GRPC,
         options: {
           package: 'book',
-          protoPath: join(process.cwd(), './../proto/book.proto'),
+          protoPath: join(process.cwd(), '../proto/book.proto'),
         },
       },
     ]),
