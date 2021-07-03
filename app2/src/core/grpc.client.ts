@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { loadPackageDefinition, credentials } from '@grpc/grpc-js';
 import { loadSync } from '@grpc/proto-loader';
+import { Duplex } from 'stream';
 import { join } from 'path';
 
 import { MethodLogger } from '../decorators';
@@ -20,7 +21,7 @@ interface BookClient {
     query: GrpcBookQuery,
     callback: (err: Error, book: GrpcBookModel) => void,
   ) => void;
-  findMany: any;
+  findMany: () => Duplex;
 }
 
 @Injectable()
@@ -38,11 +39,9 @@ export class GrpcClient {
         oneofs: true,
       },
     );
-    const service = loadPackageDefinition(packageDefinition).book;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.client = new service.BookService(
-      'localhost:5000',
+    const bookPackage = loadPackageDefinition(packageDefinition).book;
+    this.client = new bookPackage['BookService'](
+      process.env.GRPC_BOOK_URL,
       credentials.createInsecure(),
     );
   }
