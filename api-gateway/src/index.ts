@@ -30,7 +30,7 @@ const app = new Koa();
       return next();
     });
     app.listen(PORT, async () => {
-      logger.info(`API gateway listening at http://localhost:${PORT}${server.graphqlPath}`);
+      logger.info(`API gateway is running on http://localhost:${PORT}${server.graphqlPath}`);
     });
   }
 })();
