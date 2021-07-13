@@ -1,5 +1,7 @@
 import pino from 'pino';
 
+import { NODE_ENV } from '../config';
+
 const levels: { [key: number]: string } = {
   10: 'TRACE',
   20: 'DEBUG',
@@ -11,7 +13,7 @@ const levels: { [key: number]: string } = {
 
 const logger = pino({
   level: 'info',
-  prettyPrint: process.env.NODE_ENV ? process.env.NODE_ENV === 'development' : true,
+  prettyPrint: NODE_ENV ? NODE_ENV === 'development' : true,
   prettifier:
     () =>
     ({ level, msg }: { level: number; msg: string }) =>
