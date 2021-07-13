@@ -1,6 +1,6 @@
 import { Context, Next } from 'koa';
 
-import { logger } from '../../utils';
+import { logger } from '../utils';
 
 const queryLogger = async (ctx: Context, next: Next): Promise<void> => {
   const start = Date.now();

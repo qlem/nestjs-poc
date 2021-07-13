@@ -1,3 +1,1 @@
-import queryLogger from './queryLogger';
-
-export { queryLogger };
+export { default as queryLogger } from './queryLogger';
